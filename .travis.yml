@@ -9,6 +9,8 @@ env:
     - distro: ubuntu1604
       init: /lib/systemd/systemd
       run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    - distro: centos7
+    - distro: centos6
 #    - distro: debian8
 #      init: /lib/systemd/systemd
 #      run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
