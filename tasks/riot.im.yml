@@ -1,11 +1,14 @@
 ---
+
 - name: Create riot.im install dir
   file:
-    path: "{{ riot_path }}"
+    path: "{{ item }}"
     state: directory
-    owner: "root"
-    group: "root"
+    owner: root
+    group: root
     mode: 0755
+  with_items:
+    - "{{ riot_path }}/.well-known"
 
 - name: Download and extract riot.im
   unarchive:
@@ -20,20 +23,24 @@
 - name: riot.im configuration
   template:
     src: riot_config.json.j2
-    dest: "{{ riot_path }}/{{ riot_im_archive }}/config.json"
-  
+    dest: "{{ riot_path }}/{{ riot_im_archive }}/config.{{ riot_hostname }}.json"
+    owner: root
+    group: root
+    mode: 0664
 
 - name: Install nginx conf for riot.im
   template:
-    src:  etc/nginx/sites-available/riot.j2
-    dest: /etc/nginx/sites-available/riot
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: 'etc/nginx/sites-available/riot.j2', dest: '/etc/nginx/sites-available/{{ riot_hostname }}' }
   notify:
     - restart nginx
 
 - name: Enable the riot.im vhost (symlink)
   file:
-    src: /etc/nginx/sites-available/riot
-    dest: /etc/nginx/sites-enabled/riot
+    src: /etc/nginx/sites-available/{{ riot_hostname }}
+    dest: /etc/nginx/sites-enabled/{{ riot_hostname }}
     state: link
   notify:
     - restart nginx

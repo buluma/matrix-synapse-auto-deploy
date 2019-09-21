@@ -1,29 +1,56 @@
 ---
 
 - name: Update apt cache
-  apt: update_cache=yes
+  apt:
+    update_cache: yes
   changed_when: false
 
+- name: Making sure the man8 folder exists
+  file:
+    path: /usr/share/man/man8
+    state: directory
+    mode: 0755
+
 - name: install basic packages
-  apt: "pkg={{item}} state=installed"
-  with_items:
-    - wget
-    - git
+  apt:
+    name:
+      - wget
+      - git
+      - openssl
+      - python-openssl
+    state: present
 
-- import_tasks: openssl.yml
-  when: generate_DH_params
-
-- import_tasks: synapse.yml
+- name: Import synapse tasks
+  import_tasks: synapse.yml
+  when: install_synapse
   tags: synapse
-- import_tasks: coturn.yml
-  when: install_turnserver|bool == true
+
+- name: Import turnserver tasks
+  import_tasks: coturn.yml
+  when: install_turnserver
   tags: turnserver
-- import_tasks: nginx.yml
-  when: install_reverseproxy|bool == true
-- import_tasks: postgres.yml
-  when: install_postgres|bool == true
+
+- name: Import nginx tasks
+  import_tasks: nginx.yml
+  when: install_reverseproxy
+  tags: nginx
+
+- name: Import letsencrypt tasks
+  import_tasks: letsencrypt.yml
+  when: install_letsencrypt
+  tags: letsencrypt
+
+- name: Import postgres tasks
+  import_tasks: postgres.yml
+  when: install_postgres
   tags: postgres
-- import_tasks: mxisd.yml
-  when: install_mxisd|bool == true
-- import_tasks: riot.im.yml
+
+#- name: Import mxisd tasks
+#  import_tasks: mxisd.yml
+#  when: install_mxisd
+#  tags: mxisd
+
+- name: Import riot.im tasks
+  import_tasks: riot.im.yml
+  when: install_riot
   tags: riot

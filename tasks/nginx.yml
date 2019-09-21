@@ -1,22 +1,46 @@
 ---
 
 - name: Installing packages needed for the reverse proxy
-  action: apt pkg=nginx state=installed
-  when: install_nginx_package|bool == true
+  apt:
+    name: nginx
+    state: present
+  when: nginx_install_package
 
-- name: Install nginx conf
+- name: Creating required directories
+  file:
+    dest: /etc/nginx/common
+    state: directory
+
+- name: Test if nginx synapse config exists
+  stat:
+    path: /etc/nginx/sites-available/synapse
+  register: nginx_stats_synapse
+
+- name: Install nginx conf for lets encrypt
   template:
-    src:  etc/nginx/sites-available/synapse.j2
+    src:  etc/nginx/sites-available/synapse-le.j2
     dest: /etc/nginx/sites-available/synapse
   notify:
-   - restart nginx
+    - restart nginx
+  when: install_letsencrypt and nginx_stats_synapse.stat.exists == False
+
+- name: Install nginx conf for synapse
+  template:
+    src:  etc/nginx/{{item.src}}
+    dest: /etc/nginx/{{item.dest}}
+  with_items:
+    - { src: 'sites-available/synapse.j2', dest: 'sites-available/synapse' }
+    - { src: 'common/matrix.conf.j2', dest: 'common/matrix.conf' }
+  notify:
+    - restart nginx
+  when: not install_letsencrypt
 
 - name: Enable the vhost (symlink)
   file:
     src: /etc/nginx/sites-available/synapse
     dest: /etc/nginx/sites-enabled/synapse
     state: link
-  notify: 
+  notify:
     - restart nginx
   when: not ansible_check_mode
 
@@ -24,5 +48,8 @@
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
-  notify: 
+  notify:
     - restart nginx
+
+- name: Flush handlers
+  meta: flush_handlers

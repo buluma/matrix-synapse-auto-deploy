@@ -7,10 +7,13 @@ After=syslog.target
 Type=simple
 User={{ username }}
 Group={{ username }}
-WorkingDirectory=/home/{{ username }}/.synapse/{{synapse_version}}/
-ExecStart=/home/{{ username }}/.synapse/{{synapse_version}}/bin/python -B -m synapse.app.homeserver -c homeserver.yaml
+MemoryMax={{ synapse_memory_percent }}
+WorkingDirectory={{ synapse_path }}/
+ExecStart={{ synapse_path }}/bin/python -B -m synapse.app.homeserver -c {{ synapse_path }}/homeserver.yaml
+ExecStop={{ synapse_path }}/bin/synctl stop {{ synapse_path }}/homeserver.yaml
 Restart=on-failure
 Environment=USER={{ username }} HOME=/home/{{ username }}
+Environment=SYNAPSE_CACHE_FACTOR={{synapse_cache_factor }}
 
 [Install]
 WantedBy=multi-user.target

@@ -1,13 +1,14 @@
 ---
 
 - name: Install packages needed to compile coturn server
-  action: "apt pkg={{item}} state=installed"
-  with_items:
-   - gcc
-   - make
-   - autoconf
-   - libevent-dev
-   - libsqlite3-dev
+  apt:
+    name:
+      - gcc
+      - make
+      - autoconf
+      - libevent-dev
+      - libsqlite3-dev
+    state: present
 
 - name: Create coturn install dir
   file:
@@ -28,16 +29,20 @@
   register: turn_download
 
 - name: Compile and install coturn
-  command: "./configure && make && make install"
+  command: "{{ item }}"
   args:
     chdir: "{{ turn_path }}/{{ turn_archive }}"
+  with_items:
+    - ./configure
+    - /usr/bin/make
+    - /usr/bin/make install
   when: turn_download.changed
 
 - name: Install turnserver config
   template:
     src: etc/turnserver.conf.j2
     dest: /etc/turnserver.conf
-  notify: 
+  notify:
     - restart turn server
 
 - name: Install systemd service
@@ -49,11 +54,11 @@
     - reload systemctl daemon
     - restart turn server
 
-- name: Configure local coturn turn_uris
-  lineinfile: "dest=/home/{{ username }}/.synapse/{{synapse_version}}/homeserver.yaml"
-  args:
-    regexp: "^turn_uris:"
-    line: "turn_uris: [ \"turn:{{ hostname }}:3478?transport=udp\", \"turn:{{ hostname }}:3478?transport=tcp\" ]"
-  when: install_turnserver|bool == true and not ansible_check_mode
-  notify:
-    - restart synapse
+#- name: Configure local coturn turn_uris
+#  lineinfile: "dest={{ synapse_path }}/homeserver.yaml"
+#  args:
+#    regexp: "^turn_uris:"
+#    line: "turn_uris: [ \"turn:{{ hostname }}:3478?transport=udp\", \"turn:{{ hostname }}:3478?transport=tcp\" ]"
+#  when: install_turnserver and not ansible_check_mode
+#  notify:
+#    - restart synapse

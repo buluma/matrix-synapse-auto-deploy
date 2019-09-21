@@ -1,17 +1,51 @@
 {
-    "default_hs_url": "https://{{ hostname }}",
-    "default_is_url": "https://{{ hostname }}",
+    "default_server_config": {
+        "m.homeserver": {
+            "base_url": "https://{{ riot_hs_url }}",
+            "server_name": "Geekbundle.org"
+        },
+        "m.identity_server": {
+            "base_url": "https://{{ riot_is_url }}"
+        }
+    },
+    "disable_custom_urls": true,
+    "disable_guests": true,
+    "disable_login_language_selector": false,
+    "disable_3pid_login": false,
     "brand": "Riot",
-{% if riot_integration_ui is defined and not riot_integration_ui is none %}
-    "integrations_ui_url": "{{ riot_integration_ui }}",
+{% if riot_integration_ui is not none and riot_integration_ui | length > 0 %}
+    "integrations_ui_url": {{ riot_integration_ui }},
 {% endif %}
-{% if riot_integration_api is defined and not riot_integration_api is none %}
-    "integrations_rest_url": "{{ riot_integration_api }}",
+{% if riot_integration_api is not none and riot_integration_api | length > 0 %}
+    "integrations_rest_url": {{ riot_integration_api }},
 {% endif %}
-    "enableLabs": true,
+{% if riot_integration_ui is not none and riot_integration_ui | length > 0 %}
+    "integrations_jitsi_widget_url": {{ riot_integration_ui }},
+{% endif %}
+{% if riot_bug_report_endpoint_url is not none and riot_bug_report_endpoint_url | length > 0 %}
+    "bug_report_endpoint_url": {{ riot_bug_report_endpoint_url }},
+{% endif %}
+    "defaultCountryCode": "{{ riot_defaultCountryCode }}",
+    "showLabsSettings": true,
+    "default_federate": true,
+    "default_theme": "{{ riot_theme }}",
     "roomDirectory": {
         "servers": [
-            "{{ hostname }}"
+            "{{ hostname }}",
+            "matrix.org"
         ]
+    },
+    "welcomeUserId": null,
+    "piwik": {
+        "x-url": "https://piwik.riot.im/",
+        "whitelistedHSUrls": ["https://matrix.org"],
+        "whitelistedISUrls": ["https://vector.im", "https://matrix.org"],
+        "siteId": 1
+    },
+    "enable_presence_by_hs_url": {
+        "https://matrix.org": false
+    },
+    "embeddedPages": {
+        "homeUrl": ""
     }
 }
