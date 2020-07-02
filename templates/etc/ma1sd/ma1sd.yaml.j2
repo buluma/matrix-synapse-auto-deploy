@@ -1,14 +1,27 @@
 # {{ ansible_managed }}
-# For a complete list of options, see https://github.com/ma1uta/ma1sd/
+# For a complete list of options, see https://github.com/ma1uta/ma1sd/docs/README.md
+#
+# Please follow the Getting Started guide if this is your first time using/configuring ma1sd
+#
+#  -- https://github.com/ma1uta/ma1sd/blob/master/docs/getting-started.md#getting-started
+#
 
 #######################
 # Matrix config items #
 #######################
 # Matrix domain, same as the domain configure in your Homeserver configuration.
+# NOTE: in Synapse Homeserver, the Matrix domain is defined as 'server_name' in configuration file.
 #
-# This is used to build the various identifiers for identity, auth and directory.
+# This is used to build the various identifiers in all the features.
+#
+# If the hostname of the public URL used to reach your Matrix services is different from your Matrix domain,
+# per example matrix.domain.tld vs domain.tld, then use the server.name configuration option.
+# See the "Configure" section of the Getting Started guide for more info.
+#
 matrix:
   domain: {{ domain }}
+  v1: true   # deprecated
+  v2: true   # MSC2140 API v2. Riot require enabled V2 API.
 
 server:
    name: {{ hostname }}
@@ -25,8 +38,15 @@ dns:
 ################
 # Signing keys #
 ################
-# Absolute path for the Identity Server signing key.
-# During testing, /var/tmp/ma1sd.key is a possible value
+# Absolute path for the Identity Server signing keys database.
+# /!\ THIS MUST **NOT** BE YOUR HOMESERVER KEYS FILE /!\
+# If this path does not exist, it will be auto-generated.
+#
+# During testing, /var/tmp/ma1sd/keys is a possible value
+# For production, recommended location shall be one of the following:
+#   - /var/lib/ma1sd/keys
+#   - /var/opt/ma1sd/keys
+#   - /var/local/ma1sd/keys
 #
 key:
   path: /var/lib/ma1sd/signing.key
@@ -48,11 +68,17 @@ storage:
       database: /var/lib/ma1sd/store.db
 {% if ma1sd_ldap_enable %}
 
-################
-# LDAP Backend #
-################
+###################
+# Identity Stores #
+###################
+# If you are using synapse standalone and do not have an Identity store,
+# see https://github.com/ma1uta/ma1sd/blob/master/docs/stores/synapse.md#synapse-identity-store
+#
 # If you would like to integrate with your AD/Samba/LDAP server,
 # see https://github.com/ma1uta/ma1sd/blob/master/docs/stores/ldap.md
+#
+# For any other Identity store, or to simply discover them,
+# see https://github.com/ma1uta/ma1sd/blob/master/docs/stores/README.md
 
 ldap:
   enabled: true
@@ -98,11 +124,15 @@ synapseSql:
 #################################################
 # Notifications for invites/addition to profile #
 #################################################
-# If you would like to change the content,
+# This is mandatory to deal with anything e-mail related.
+#
+# For an introduction to sessions, invites and 3PIDs in general,
+# see https://github.com/ma1uta/ma1sd/blob/master/docs/threepids/session/session.md#3pid-sessions
+#
+# If you would like to change the content of the notifications,
 # see https://github.com/ma1uta/ma1sd/blob/master/docs/threepids/notification/template-generator.md
 #
-#### E-mail invite sender
-
+#### E-mail connector
 {% if mail %}
 threepid:
   medium:

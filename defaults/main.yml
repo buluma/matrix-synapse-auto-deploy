@@ -137,7 +137,7 @@ mxisd_sql_type: postgresql
 ## ma1sd (identity server)
 ### Only ldap configuration for now
 ### For more information see https://github.com/ma1uta/ma1sd/
-ma1sd_version: 2.3.0
+ma1sd_version: 2.4.0
 
 ma1sd_ldap_enable: false
 ma1sd_ldap_server:
@@ -153,7 +153,7 @@ ma1sd_sql_connection_string: //{{ postgres_host }}/{{ postgres_database }}?user=
 ma1sd_sql_type: postgresql
 
 ## riot-web
-riot_im_version: 1.6.2
+riot_im_version: 1.6.7
 riot_im_archive: riot-v{{ riot_im_version }}
 riot_im_tarball_url: "https://github.com/vector-im/riot-web/releases/download/v{{ riot_im_version }}/{{ riot_im_archive }}.tar.gz"
 riot_hostname: "{{ hostname }}" # For security it should be on another domain as the matrix server, so change it!
