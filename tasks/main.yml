@@ -22,17 +22,17 @@
 
 - name: Import synapse tasks
   import_tasks: synapse.yml
-  when: install_synapse
+  when: install_synapse and 'matrix' in group_names
   tags: synapse
 
 - name: Import turnserver tasks
   import_tasks: coturn.yml
-  when: install_turnserver
+  when: install_turnserver and 'matrix' in group_names
   tags: turnserver
 
 - name: Import nginx tasks
   import_tasks: nginx.yml
-  when: install_reverseproxy
+  when: install_reverseproxy and 'matrix' in group_names
   tags: nginx
 
 - name: Flush handlers
@@ -40,30 +40,32 @@
 
 - name: Import letsencrypt tasks
   import_tasks: letsencrypt.yml
-  when: install_letsencrypt
+  when: install_letsencrypt and 'matrix' in group_names
   tags: letsencrypt
 
 - name: Flush handlers
   meta: flush_handlers
 
+- name: Delegate facts to group matrix_db_server
+  set_fact:
+    postgres_listen_address: "{{ postgres_listen_address }}"
+  delegate_to: "{{ item }}"
+  delegate_facts: true
+  with_items: "{{ groups['matrix_db_server'] }}"
+
 - name: Import postgres tasks
   import_tasks: postgres.yml
-  when: install_postgres
+  when: install_postgres and 'matrix_db_server' in group_names
   tags: postgres
 
 - name: Import ma1sd tasks
   import_tasks: ma1sd.yml
-  when: install_ma1sd
+  when: install_ma1sd and 'matrix' in group_names
   tags: ma1sd
-
-- name: Import mxisd tasks
-  import_tasks: mxisd.yml
-  when: install_mxisd
-  tags: mxisd
 
 - name: Import riot.im tasks
   import_tasks: riot.im.yml
-  when: install_riot
+  when: install_riot and 'matrix' in group_names
   tags: riot
 
 - name: Flush handlers

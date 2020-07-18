@@ -1,6 +1,6 @@
 ---
 
-- name: Install mxisd
+- name: Install ma1sd
   apt:
     deb: https://github.com/ma1uta/ma1sd/releases/download/{{ ma1sd_version }}/ma1sd_{{ ma1sd_version }}_all.deb
 

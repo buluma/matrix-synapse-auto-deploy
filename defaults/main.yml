@@ -114,6 +114,7 @@ le_remaining_days: 20
 ## Postgresql
 make_migration: false     # Migrate the database from sqlite to postgres
 postgres_database: homeserver
+postgres_listen_address: localhost
 postgres_host: localhost
 
 ## mxisd (identity server)
@@ -137,7 +138,7 @@ mxisd_sql_type: postgresql
 ## ma1sd (identity server)
 ### Only ldap configuration for now
 ### For more information see https://github.com/ma1uta/ma1sd/
-ma1sd_version: 2.3.0
+ma1sd_version: 2.4.0
 
 ma1sd_ldap_enable: false
 ma1sd_ldap_server:
