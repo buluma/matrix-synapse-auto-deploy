@@ -5,7 +5,7 @@
     name:
       - libpq-dev
       - postgresql
-      - python-psycopg2
+      - python3-psycopg2
     state: present
 
 - name: Install psycopg2 into the python venv
@@ -61,6 +61,15 @@
 #    line: '\1user: "{{ username }}"\n\1password: "{{ database_secret }}"\n\1database: "homeserver"\n\1host: "localhost"\n\1cp_min: 5\n\1cp_max: 10'
 #    backrefs: yes
 #  when: not ansible_check_mode
+
+- name: Configure listen addresse(s)
+  lineinfile:
+    dest: "/etc/postgresql/10/main/postgresql.conf"
+    regexp: 'listen_addresses(.*)'
+    line: "listen_addresses = '{{ postgres_listen_address }}'                # what IP address(es) to listen on"
+    backrefs: yes
+  notify:
+    - restart postgresql
 
 - name: Migrate the database
   command: "{{ synapse_path }}/bin/synapse_port_db --sqlite-database homeserver.db --postgres-config homeserver.yaml"

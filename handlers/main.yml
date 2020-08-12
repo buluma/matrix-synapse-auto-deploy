@@ -21,3 +21,7 @@
 - name: restart synapse
   service: name=synapse state=restarted enabled=yes
   tags: synapse
+
+- name: restart postgresql
+  service: name=postgresql state=restarted enabled=yes
+  tags: postgres

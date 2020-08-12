@@ -5,6 +5,7 @@
 #
 #  -- https://github.com/ma1uta/ma1sd/blob/master/docs/getting-started.md#getting-started
 #
+# For a complete list of options, see https://github.com/ma1uta/ma1sd/
 
 #######################
 # Matrix config items #
@@ -47,6 +48,8 @@ dns:
 #   - /var/lib/ma1sd/keys
 #   - /var/opt/ma1sd/keys
 #   - /var/local/ma1sd/keys
+# Absolute path for the Identity Server signing key.
+# During testing, /var/tmp/ma1sd.key is a possible value
 #
 key:
   path: /var/lib/ma1sd/signing.key
