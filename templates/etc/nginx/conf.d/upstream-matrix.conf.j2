@@ -1,11 +1,5 @@
 # {{ ansible_managed }}
 
-{% if install_mxisd | bool %}
-upstream mxisd {
-    server [::1]:8090;
-}
-
-{% endif %}
 {% if install_ma1sd | bool %}
 upstream ma1sd {
     server [::1]:8090;
