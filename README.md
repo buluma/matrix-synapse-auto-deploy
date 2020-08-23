@@ -1,6 +1,6 @@
 # Auto-deployment for matrix-org/synapse
 
-[![Maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/Madic-/matrix-synapse-auto-deploy) [![Build Status](https://travis-ci.org/Madic-/matrix-synapse-auto-deploy.svg?branch=master)](https://travis-ci.org/Madic-/matrix-synapse-auto-deploy)
+[![Maintenance](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/Madic-/matrix-synapse-auto-deploy) [![Build Status](https://travis-ci.org/Madic-/matrix-synapse-auto-deploy.svg?branch=master)](https://travis-ci.org/Madic-/matrix-synapse-auto-deploy) [![HitCount](http://hits.dwyl.com/Madic-/matrix-synapse-auto-deploy.svg)](http://hits.dwyl.com/Madic-/matrix-synapse-auto-deploy)
 
 This ansible role will automatically deploy a ready-to-go [matrix](http://matrix.org/) server on any server. It differs from the [matrix-docker-ansible-deploy](https://github.com/spantaleev/matrix-docker-ansible-deploy) roles by not using docker but instead a python3 virtual environment, at least for synapse.
 
