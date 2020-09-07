@@ -19,6 +19,7 @@
 # per example matrix.domain.tld vs domain.tld, then use the server.name configuration option.
 # See the "Configure" section of the Getting Started guide for more info.
 #
+# This is used to build the various identifiers for identity, auth and directory.
 matrix:
   domain: {{ domain }}
   v1: true   # deprecated
@@ -135,7 +136,8 @@ synapseSql:
 # If you would like to change the content of the notifications,
 # see https://github.com/ma1uta/ma1sd/blob/master/docs/threepids/notification/template-generator.md
 #
-#### E-mail connector
+#### E-mail invite sender
+
 {% if mail %}
 threepid:
   medium:

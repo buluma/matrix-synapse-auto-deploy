@@ -81,7 +81,7 @@ nginx_install_package: true # installs nginx via package manager
 nginx_block_openid: true
 
 ## Turnserver
-turn_version: 4.5.1.2
+turn_version: 4.5.1.3
 turn_archive: coturn-{{ turn_version }}
 turn_tarball_url: https://github.com/coturn/coturn/archive/{{ turn_version }}.tar.gz
 turn_path: /usr/src
@@ -136,7 +136,7 @@ ma1sd_sql_connection_string: //{{ postgres_host }}/{{ postgres_database }}?user=
 ma1sd_sql_type: postgresql
 
 ## riot-web
-riot_im_version: 1.7.1
+riot_im_version: 1.7.5
 riot_im_archive: riot-v{{ riot_im_version }}
 riot_im_tarball_url: "https://github.com/vector-im/riot-web/releases/download/v{{ riot_im_version }}/{{ riot_im_archive }}.tar.gz"
 riot_hostname: "{{ hostname }}" # For security it should be on another domain as the matrix server, so change it!
