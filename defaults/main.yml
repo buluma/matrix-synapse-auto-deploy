@@ -24,6 +24,7 @@ registration_shared_secret: CHANGEME(pwgen -y 50)
 macaroon_secret_key: CHANGEME(pwgen -y 50)
 form_secret: CHANGEME(pwgen -y 50)
 max_upload_size: 10M # Max upload size
+guest_access: false
 synapse_path: /home/{{ username }}/.synapse
 absolute_path_certificate: /etc/pki/letsencrypt/{{ hostname }}/{{ hostname }}.crt
 absolute_path_certificate_csr: /etc/pki/letsencrypt/{{ hostname }}/{{ hostname }}.csr
@@ -149,11 +150,18 @@ riot_path_key:
 riot_path: /var/www/{{ riot_hostname }}
 riot_integration_ui: "https://scalar.vector.im/"
 riot_integration_api: "https://scalar.vector.im/api"
-riot_integrations_jitsi_widget_url: "https://scalar.vector.im/api/widgets/jitsi.html"
-riot_bug_report_endpoint_url: "https://riot.im/bugreports/submit"
+riot_integrations_widget_url: |
+          "https://scalar.vector.im/_matrix/integrations/v1",
+          "https://scalar.vector.im/api",
+          "https://scalar-staging.vector.im/_matrix/integrations/v1",
+          "https://scalar-staging.vector.im/api",
+          "https://scalar-staging.riot.im/scalar/api"
+riot_bug_report_endpoint_url: "https://element.io/bugreports/submit"
+riot_jitsi_url: jitsi.riot.im
 riot_hs_url: "{{ hostname }}"
 ### Recommended: matrix.org, vector.im or {{ hostname }} (when installing mxisd)
 riot_is_url: "{{ hostname }}"
+riot_server_name: "{{ domain }}"
 riot_brand: Riot
 ### light, dark, simple.im
 riot_theme: light
