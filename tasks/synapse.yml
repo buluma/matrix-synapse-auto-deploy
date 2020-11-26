@@ -19,6 +19,7 @@
       - virtualenv
       - libsystemd-dev
       - pkg-config
+      - libjemalloc1
     state: present
 
 - name: Create synapse user
