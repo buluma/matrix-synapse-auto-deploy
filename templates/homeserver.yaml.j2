@@ -297,7 +297,7 @@ listeners:
   - port: 8008
     tls: false
 {% if install_reverseproxy %}
-    bind_addresses: ['::1']
+    bind_addresses: [{{ synapse_reverseproxy_bind_addresses }}]
 {% else %}
     bind_addresses: ['::']
 {% endif %}

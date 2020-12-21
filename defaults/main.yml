@@ -33,6 +33,7 @@ absolute_path_intermediate_chain: /etc/pki/letsencrypt/{{ hostname }}/intermedia
 absolute_path_fullchain: /etc/pki/letsencrypt/{{ hostname }}/fullchain.crt
 synapse_path_certificate: "{{ absolute_path_fullchain }}"
 synapse_path_key: "{{ absolute_path_key }}"
+synapse_reverseproxy_bind_addresses: "'::1'"
 x_forwarded: true
 url_preview_enabled: false
 ### Configure e-mail Settings
