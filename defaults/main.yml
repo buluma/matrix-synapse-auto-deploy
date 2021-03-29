@@ -6,9 +6,10 @@ install_synapse: true
 install_turnserver: true
 install_reverseproxy: true
 install_postgres: true
+install_ma1sd: true
 install_mxisd: false
 install_riot: true
-install_letsencrypt: false
+install_letsencrypt: true
 
 ## Synapse
 username: synapse # under wich linux user the server should be installed and run
@@ -23,6 +24,7 @@ registration_shared_secret: CHANGEME(pwgen -y 50)
 macaroon_secret_key: CHANGEME(pwgen -y 50)
 form_secret: CHANGEME(pwgen -y 50)
 max_upload_size: 10M # Max upload size
+guest_access: false
 synapse_path: /home/{{ username }}/.synapse
 absolute_path_certificate: /etc/pki/letsencrypt/{{ hostname }}/{{ hostname }}.crt
 absolute_path_certificate_csr: /etc/pki/letsencrypt/{{ hostname }}/{{ hostname }}.csr
@@ -31,6 +33,7 @@ absolute_path_intermediate_chain: /etc/pki/letsencrypt/{{ hostname }}/intermedia
 absolute_path_fullchain: /etc/pki/letsencrypt/{{ hostname }}/fullchain.crt
 synapse_path_certificate: "{{ absolute_path_fullchain }}"
 synapse_path_key: "{{ absolute_path_key }}"
+synapse_reverseproxy_bind_addresses: "'::1'"
 x_forwarded: true
 url_preview_enabled: false
 ### Configure e-mail Settings
@@ -45,7 +48,7 @@ mail_tls: 1
 mail_tls_synapse: True
 mail_user:
 mail_pass:
-notif_from: Your Friendly %(app) Home Server <{{ hostname }}>
+notif_from: "{{ domain | upper }} Matrix Home Server <{{ mail_from }}>"
 #### .well-known support - The well-known server file needs to be placed at the apex domain, e.g. domain.com/.well-known/matrix
 #### Because this role does not configure your apex domain it just assumes that it will also get served via the same server
 #### where synapse runs. You can configure the path to your .well-known apex domain directory
@@ -61,7 +64,7 @@ synapse_enable_metrics: false
 synapse_use_presence: true
 ### Expire user access token after 24h
 synapse_expire_access_token: false
-synapse_session_lifetime: 24h
+synapse_session_lifetime:
 ### How much ram in percent should synapse be allowed to use
 synapse_memory_percent: 80%
 #### When true, search all users visible to your HS when searching the user directory, rather than limiting to users visible in public rooms
@@ -70,6 +73,9 @@ synapse_user_directory: false
 synapse_app_service_config_files:
 #### - /path/to/app_service1/configuration.conf
 #### - /path/to/app_service2/configuration.conf
+synapse_enable_group_creation: false
+synapse_enable_group_creation_prefix: "unofficial/"
+synapse_admin_contact: mailto:admin@server.com
 
 ## nginx
 nginx_install_package: true # installs nginx via package manager
@@ -77,7 +83,7 @@ nginx_install_package: true # installs nginx via package manager
 nginx_block_openid: true
 
 ## Turnserver
-turn_version: 4.5.1.1
+turn_version: 4.5.1.3
 turn_archive: coturn-{{ turn_version }}
 turn_tarball_url: https://github.com/coturn/coturn/archive/{{ turn_version }}.tar.gz
 turn_path: /usr/src
@@ -85,8 +91,16 @@ turn_path: /usr/src
 ### Recommended if you do not let the playbook install the coturn turnserver.
 turn_uris: '"turn:{{ hostname }}:3478?transport=udp\", \"turn:{{ hostname }}:3478?transport=tcp"'
 turn_shared_secret: CHANGEME
+### Listening IP addresses. If coturn should be accessible from the outside, you probably want that, they need to be changed.
+turn_listening_ips:
+  - 127.0.0.1
+  - fe80::1
 ### turn_username:
 ### turn_password:
+turn_denied_peer_ips:
+  - 10.0.0.0-10.255.255.255
+  - 192.168.0.0-192.168.255.255
+  - 172.16.0.0-172.31.255.255
 
 ## letsencrypt
 le_well_known_location: "{{ riot_path }}"
@@ -106,21 +120,29 @@ le_remaining_days: 20
 ## Postgresql
 make_migration: false     # Migrate the database from sqlite to postgres
 postgres_database: homeserver
+postgres_listen_address: localhost
 postgres_host: localhost
 
-## mxisd (identity server)
+## ma1sd (identity server)
 ### Only ldap configuration for now
-### For more information see https://github.com/kamax-io/mxisd/
-ldap_server:
-bind_dn:
-bind_pass:
-base_dn:
-ldap_tls: true
-ldap_port: 636
-ldap_filter: (&(objectclass=user)(mail=*))
+### For more information see https://github.com/ma1uta/ma1sd/
+ma1sd_version: 2.4.0
+
+ma1sd_ldap_enable: false
+ma1sd_ldap_server:
+ma1sd_bind_dn:
+ma1sd_bind_pass:
+ma1sd_base_dn:
+ma1sd_ldap_tls: true
+ma1sd_ldap_port: 636
+ma1sd_ldap_filter: (&(objectclass=user)(mail=*))
+
+ma1sd_sql_enable: true
+ma1sd_sql_connection_string: //{{ postgres_host }}/{{ postgres_database }}?user={{ username }}&password={{ database_secret }}
+ma1sd_sql_type: postgresql
 
 ## riot-web
-riot_im_version: 1.3.3
+riot_im_version: 1.7.14
 riot_im_archive: riot-v{{ riot_im_version }}
 riot_im_tarball_url: "https://github.com/vector-im/riot-web/releases/download/v{{ riot_im_version }}/{{ riot_im_archive }}.tar.gz"
 riot_hostname: "{{ hostname }}" # For security it should be on another domain as the matrix server, so change it!
@@ -129,11 +151,18 @@ riot_path_key:
 riot_path: /var/www/{{ riot_hostname }}
 riot_integration_ui: "https://scalar.vector.im/"
 riot_integration_api: "https://scalar.vector.im/api"
-riot_integrations_jitsi_widget_url: "https://scalar.vector.im/api/widgets/jitsi.html"
-riot_bug_report_endpoint_url: "https://riot.im/bugreports/submit"
+riot_integrations_widget_url: |
+          "https://scalar.vector.im/_matrix/integrations/v1",
+          "https://scalar.vector.im/api",
+          "https://scalar-staging.vector.im/_matrix/integrations/v1",
+          "https://scalar-staging.vector.im/api",
+          "https://scalar-staging.riot.im/scalar/api"
+riot_bug_report_endpoint_url: "https://element.io/bugreports/submit"
+riot_jitsi_url: jitsi.riot.im
 riot_hs_url: "{{ hostname }}"
-### Recommended: matrix.org, vector.im or {{ hostname }}
-riot_is_url: matrix.org
+### Recommended: matrix.org, vector.im or {{ hostname }} (when installing mxisd)
+riot_is_url: "{{ hostname }}"
+riot_server_name: "{{ domain }}"
 riot_brand: Riot
 ### light, dark, simple.im
 riot_theme: light
