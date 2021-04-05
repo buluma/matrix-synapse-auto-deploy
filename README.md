@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.org/Madic-/matrix-synapse-auto-deploy.svg?branch=master)](https://travis-ci.org/Madic-/matrix-synapse-auto-deploy)
 # Auto-deployment for matrix-org/synapse
+[![Build Status](https://travis-ci.com/buluma/matrix-synapse-auto-deploy.svg?branch=master)](https://travis-ci.com/buluma/matrix-synapse-auto-deploy)
+[![HitCount](http://hits.dwyl.com/buluma/matrix-synapse-auto-deploy.svg)](http://hits.dwyl.com/buluma/matrix-synapse-auto-deploy)
 
 Auto-deployment process for the matrix-org/synapse (https://github.com/matrix-org/synapse) homeserver and turnserver using  ansible, this will automatically deploy a ready-to-go matrix server on any server.
 
