@@ -18,18 +18,21 @@
             proxy_pass       http://ma1sd/_matrix/identity;
             proxy_set_header Host $host;
             proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
         }
 
         location ^~ /_matrix/client/r0/user_directory/search {
             proxy_pass       http://ma1sd/_matrix/client/r0/user_directory/search;
             proxy_set_header Host $host;
             proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
         }
 
         location ~ ^/_matrix/client/r0/register/(email|msisdn)/requestToken$ {
             proxy_pass http://ma1sd;
             proxy_set_header Host $host;
             proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
         }
 {% endif %}
 
@@ -37,4 +40,5 @@
             proxy_pass       http://matrix;
             proxy_set_header Host $host;
             proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
         }
