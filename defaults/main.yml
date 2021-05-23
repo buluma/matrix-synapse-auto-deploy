@@ -142,15 +142,12 @@ ma1sd_sql_connection_string: //{{ postgres_host }}/{{ postgres_database }}?user=
 ma1sd_sql_type: postgresql
 
 ## riot-web
-<<<<<<< HEAD
 riot_im_version: 1.7.14
 riot_im_archive: riot-v{{ riot_im_version }}
 riot_im_tarball_url: "https://github.com/vector-im/riot-web/releases/download/v{{ riot_im_version }}/{{ riot_im_archive }}.tar.gz"
-=======
 riot_im_version: 1.7.26
 riot_im_archive: element-v{{ riot_im_version }}
 riot_im_tarball_url: "https://github.com/vector-im/element-web/releases/download/v{{ riot_im_version }}/{{ riot_im_archive }}.tar.gz"
->>>>>>> upstream/master
 riot_hostname: "{{ hostname }}" # For security it should be on another domain as the matrix server, so change it!
 riot_path_certificate:
 riot_path_key:
