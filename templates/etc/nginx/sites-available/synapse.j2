@@ -7,7 +7,6 @@ server {
         server_name {{ hostname }};
 
 {% if riot_path_certificate is none and riot_path_key is none %}
-        include common/matrix.conf;
         include common/{{ hostname}}/*.conf;
 {% endif %}
         location ~ /\.well-known {
@@ -35,23 +34,21 @@ server {
             allow all;
             root {{ le_well_known_location }};
         }
-        include common/matrix.conf;
         include common/{{ hostname}}/*.conf;
 }
 {% if install_reverseproxy | bool %}
 
 server {
-	listen 8448 ssl http2;
+    listen 8448 ssl http2;
 {% if not (ansible_default_ipv6.address is undefined or ansible_default_ipv6.address is none or ansible_default_ipv6.address | trim == '') %}
-	listen [::]:8448 ssl http2;
+    listen [::]:8448 ssl http2;
 {% endif %}
-	server_name {{ hostname }};
+    server_name {{ hostname }};
 
         ssl_certificate      {{ synapse_path_certificate }};
         ssl_certificate_key  {{ synapse_path_key }};
 
         access_log off;
-        include common/matrix.conf;
         include common/{{ hostname}}/*.conf;
 }
 {% endif %}

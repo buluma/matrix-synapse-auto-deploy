@@ -32,27 +32,6 @@
 
 - name: Import nginx tasks
   import_tasks: nginx.yml
-  when: install_reverseproxy
-  tags: nginx
-
-- name: Import letsencrypt tasks
-  import_tasks: letsencrypt.yml
-  when: install_letsencrypt
-  tags: letsencrypt
-
-- name: Import postgres tasks
-  import_tasks: postgres.yml
-  when: install_postgres
-  tags: postgres
-
-#- name: Import mxisd tasks
-#  import_tasks: mxisd.yml
-#  when: install_mxisd
-#  tags: mxisd
-
-- name: Import riot.im tasks
-  import_tasks: riot.im.yml
-  # when: install_riot
   when: install_reverseproxy and 'matrix' in group_names
   tags: nginx
 

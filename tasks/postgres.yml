@@ -5,7 +5,6 @@
     name:
       - libpq-dev
       - postgresql
-      # - python-psycopg2
       - python3-psycopg2
     state: present
 

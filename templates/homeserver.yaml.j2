@@ -137,7 +137,6 @@ soft_file_limit: 0
 # (except those sent by local server admins). The default is False.
 # block_non_admin_invites: True
 
-
 # Room searching
 #
 # If disabled, new messages will not be indexed for searching and users
@@ -156,12 +155,6 @@ soft_file_limit: 0
 #  - nyc.example.com
 #  - syd.example.com
 
-# List of ports that Synapse should listen on, their purpose and their
-# configuration.
-listeners:
-{% if install_reverseproxy == false %}
-  # Main HTTPS listener
-  # For when matrix traffic is sent directly to synapse.
 # Prevent federation requests from being sent to the following
 # blacklist IP address CIDR ranges. If this option is not specified, or
 # specified with an empty list, no ip range blacklist will be enforced.
@@ -295,16 +288,6 @@ listeners:
     #     config: {}
 
 {% endif %}
-
-  # Unsecure HTTP listener,
-  # For when matrix traffic passes through loadbalancer that unwraps TLS.
-  - port: 8008
-    tls: false
-{% if install_reverseproxy %}
-    bind_addresses: ['127.0.0.1']
-{% else %}
-    bind_addresses: ['::', '0.0.0.0']
-
   # Unsecure HTTP listener: for when matrix traffic passes through a reverse proxy
   # that unwraps TLS.
   #
@@ -317,7 +300,6 @@ listeners:
     bind_addresses: [{{ synapse_reverseproxy_bind_addresses }}]
 {% else %}
     bind_addresses: ['::']
-
 {% endif %}
     type: http
 
@@ -332,8 +314,6 @@ listeners:
       - names: [metrics]
         compress: true
 {% endif %}
-
-
     # example additional_resources:
     #
     #additional_resources:
@@ -348,7 +328,6 @@ listeners:
   #   type: manhole
 
 
-# Database configuration
 ## Homeserver blocking ##
 
 # How to reach the server admin, used in ResourceLimitError
@@ -676,7 +655,6 @@ acme:
 
 
 ## Database ##
->>>>>>> upstream/master
 database:
   # The database engine name
 {% if install_postgres %}
@@ -700,7 +678,6 @@ database:
 event_cache_size: "10K"
 
 
-# A yaml python logging config file
 ## Logging ##
 
 # A yaml python logging config file as described by
@@ -711,33 +688,6 @@ log_config: "{{ synapse_path }}/{{ domain }}.log.config"
 
 ## Ratelimiting ##
 
-# Number of messages a client can send per second
-rc_messages_per_second: 0.2
-
-# Number of message a client can send before being throttled
-rc_message_burst_count: 10.0
-
-# The federation window size in milliseconds
-federation_rc_window_size: 1000
-
-# The number of federation requests from a single server in a window
-# before the server will delay processing the request.
-federation_rc_sleep_limit: 10
-
-# The duration in milliseconds to delay processing events from
-# remote servers by if they go over the sleep limit.
-federation_rc_sleep_delay: 500
-
-# The maximum number of concurrent federation requests allowed
-# from a single server
-federation_rc_reject_limit: 50
-
-# The number of federation requests to concurrently process from a
-# single server
-federation_rc_concurrent: 3
-
-
-# Directory where uploaded images and attachments are stored.
 # Ratelimiting settings for client actions (registration, login, messaging).
 #
 # Each ratelimiting configuration is made of two parameters:
@@ -842,9 +792,6 @@ media_store_path: "{{ synapse_path }}/media_store"
 #   store_synchronous: false
 #   config:
 #     directory: /mnt/some/other/directory
-
-# Directory where in-progress uploads are stored.
-uploads_path: "{{ synapse_path }}/uploads"
 
 # The largest allowed upload size in bytes
 max_upload_size: "{{ max_upload_size }}"
@@ -1030,12 +977,6 @@ turn_allow_guests: True
 # Enable registration for new users.
 enable_registration: {{ enable_registration }}
 
-<<<<<<< HEAD
-# The user must provide all of the below types of 3PID when registering.
-#
-# registrations_require_3pid:
-#     - email
-#     - msisdn
 # Optional account validity configuration. This allows for accounts to be denied
 # any request after a given period.
 #
@@ -1124,20 +1065,10 @@ session_lifetime: "{{ synapse_session_lifetime }}"
 # flow (overrides registrations_require_3pid if MSISDNs are set as required)
 #
 #disable_msisdn_registration: true
->>>>>>> upstream/master
 
 # Mandate that users are only allowed to associate certain formats of
 # 3PIDs with accounts on this server.
 #
-<<<<<<< HEAD
-# allowed_local_3pids:
-#     - medium: email
-#       pattern: ".*@matrix\.org"
-#     - medium: email
-#       pattern: ".*@vector\.im"
-#     - medium: msisdn
-#       pattern: "\+44"
-
 #allowed_local_3pids:
 #  - medium: email
 #    pattern: '.*@matrix\.org'
@@ -1149,7 +1080,6 @@ session_lifetime: "{{ synapse_session_lifetime }}"
 # Enable 3PIDs lookup requests to identity servers from this server.
 #
 #enable_3pid_lookup: true
->>>>>>> upstream/master
 
 # If set, allows registration by anyone who also has the shared
 # secret, even if registration is otherwise disabled.
@@ -1165,22 +1095,6 @@ bcrypt_rounds: 12
 # Allows users to register as guests without a password/email/etc, and
 # participate in rooms hosted on this server which have been made
 # accessible to anonymous users.
-<<<<<<< HEAD
-allow_guest_access: False
-
-# The list of identity servers trusted to verify third party
-# identifiers by this server.
-trusted_third_party_id_servers:
-    - matrix.org
-    - vector.im
-    - riot.im
-
-# Users who register on this homeserver will automatically be joined
-# to these rooms
-#auto_join_rooms:
-#    - "#example:example.com"
-
-
 {% if guest_access %}
 allow_guest_access: True
 {% else %}
@@ -1252,12 +1166,11 @@ account_threepid_delegates:
 # users cannot be auto-joined since they do not exist.
 #
 #autocreate_auto_join_rooms: true
->>>>>>> upstream/master
 
 ## Metrics ###
 
 # Enable collection and rendering of performance metrics
-
+#
 {% if synapse_enable_metrics %}
 enable_metrics: True
 {% else %}
@@ -1314,30 +1227,6 @@ app_service_config_files:
 app_service_config_files: []
 {% endif %}
 
-<<<<<<< HEAD
-macaroon_secret_key: "{{ macaroon_secret_key }}"
-
-# Used to enable access token expiration.
-{% if synapse_expire_access_token %}
-expire_access_token: True
-{% else %}
-expire_access_token: False
-{% endif %}
-
-# Time that a user's session remains valid for, after they log in.
-#
-# Note that this is not currently compatible with guest logins.
-#
-# Note also that this is calculated at login time: changes are not applied
-# retrospectively to users who have already logged in.
-#
-# By default, this is infinite.
-#
-session_lifetime: "{{ synapse_session_lifetime }}"
-
-# a secret which is used to calculate HMACs for form values, to stop
-# falsification of values
-
 # Uncomment to enable tracking of application service IP addresses. Implicitly
 # enables MAU tracking for application service users.
 #
@@ -1361,15 +1250,6 @@ form_secret: "{{ form_secret }}"
 signing_key_path: "{{ synapse_path }}/{{ domain }}.signing.key"
 
 # The keys that the server used to sign messages with but won't use
-<<<<<<< HEAD
-# to sign new messages. E.g. it has lost its private key
-old_signing_keys: {}
-#  "ed25519:auto":
-#    # Base64 encoded public key
-#    key: "The public part of your old signing key."
-#    # Millisecond POSIX timestamp when the key expired.
-#    expired_ts: 123456789123
-
 # to sign new messages.
 #
 old_signing_keys:
@@ -1388,29 +1268,6 @@ old_signing_keys:
 # Used to set the valid_until_ts in /key/v2 APIs.
 # Determines how quickly servers will query to check which keys
 # are still valid.
-key_refresh_interval: "1d" # 1 Day.
-
-# The trusted servers to download signing keys from.
-perspectives:
-  servers:
-    "matrix.org":
-      verify_keys:
-        "ed25519:auto":
-          key: "Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw"
-
-
-# Enable SAML2 for registration and login. Uses pysaml2
-# config_path:      Path to the sp_conf.py configuration file
-# idp_redirect_url: Identity provider URL which will redirect
-#                   the user back to /login/saml2 with proper info.
-# See pysaml2 docs for format of config.
-#saml2_config:
-#   enabled: true
-#   config_path: "{{ synapse_path }}/sp_conf.py"
-#   idp_redirect_url: "http://{{ domain }}/idp"
-
-
-# Enable CAS for registration and login.
 #
 #key_refresh_interval: 1d
 
@@ -1594,23 +1451,18 @@ saml2_config:
 
 
 # Enable CAS for registration and login.
+#
 #cas_config:
 #   enabled: true
 #   server_url: "https://cas-server.com"
 #   service_url: "https://homeserver.domain.com:8448"
-
 #   #displayname_attribute: name
->>>>>>> upstream/master
 #   #required_attributes:
 #   #    name: value
 
 
 # The JWT needs to contain a globally unique "sub" (subject) claim.
-# jwt_config:
-#    enabled: true
-#    secret: "a secret"
-#    algorithm: "HS256"
-
+#
 #jwt_config:
 #   enabled: true
 #   secret: "a secret"
@@ -1619,10 +1471,6 @@ saml2_config:
 
 # Enable password for login.
 password_config:
-   enabled: true
-   # Uncomment and change to a secret random string for extra security.
-   # DO NOT CHANGE THIS AFTER INITIAL SETUP!
-   #pepper: ""
    # Uncomment to disable password login
    #
    #enabled: false
@@ -1637,7 +1485,6 @@ password_config:
    # DO NOT CHANGE THIS AFTER INITIAL SETUP!
    #
    #pepper: "EVEN_MORE_SECRET"
->>>>>>> upstream/master
 
 
 # Enable sending emails for notification events
@@ -1652,37 +1499,12 @@ password_config:
 #email:
 #   enable_notifs: false
 #   smtp_host: "localhost"
-<<<<<<< HEAD
-#   smtp_port: 25
 #   smtp_port: 25 # SSL: 465, STARTTLS: 587
 #   smtp_user: "exampleusername"
 #   smtp_pass: "examplepassword"
 #   require_transport_security: False
 #   notif_from: "Your Friendly %(app)s Home Server <noreply@example.com>"
 #   app_name: Matrix
-#   template_dir: res/templates
-#   notif_template_html: notif_mail.html
-#   notif_template_text: notif_mail.txt
-#   notif_for_new_users: True
-#   riot_base_url: "http://localhost/riot"
-{% else %}
-email:
-   enable_notifs: true
-   smtp_host: "{{ mail_host }}"
-   smtp_port: "{{ mail_port }}"
-   smtp_user: "{{ mail_user }}"
-   smtp_pass: "{{ mail_pass }}"
-   require_transport_security: "{{ mail_tls_synapse }}"
-   notif_from: "{{ notif_from }}"
-   app_name: Matrix
-#   template_dir: "{{ synapse_path }}/res/templates"
-   notif_template_html: notif_mail.html
-   notif_template_text: notif_mail.txt
-   notif_for_new_users: True
-   riot_base_url: "https://{{ riot_hostname }}"
-{% endif %}
-
-
 #
 #   # Enable email notifications by default
 #   #
@@ -1781,7 +1603,6 @@ email:
    validation_token_lifetime: 1h
 {% endif %}
 
->>>>>>> upstream/master
 # password_providers:
 #     - module: "ldap_auth_provider.LdapAuthProvider"
 #       config:
@@ -1796,6 +1617,7 @@ email:
 #         #bind_dn:
 #         #bind_password:
 #         #filter: "(objectClass=posixAccount)"
+
 
 
 # Clients requesting push notifications can either have the body of
@@ -1820,13 +1642,6 @@ email:
 #         example_option: 'things'
 
 
-# Whether to allow non server admins to create groups on this server
-enable_group_creation: false
-
-# If enabled, non server admins can only create groups with local parts
-# starting with this prefix
-# group_creation_prefix: "unofficial/"
-
 # Uncomment to allow non-server-admin users to create groups on this server
 #
 enable_group_creation: {{ synapse_enable_group_creation | lower }}
@@ -1840,7 +1655,6 @@ group_creation_prefix: "{{ synapse_enable_group_creation_prefix }}"
 # group_creation_prefix: "unofficial/"
 {% endif %}
 
->>>>>>> upstream/master
 
 
 # User Directory configuration
@@ -1896,6 +1710,9 @@ user_directory:
 #   block_events_error: >-
 #     To continue using this homeserver you must review and agree to the
 #     terms and conditions at %(consent_uri)s
+#
+
+
 
 # Local statistics collection. Used in populating the room directory.
 #
@@ -2048,4 +1865,3 @@ opentracing:
     #
     #  logging:
     #    false
->>>>>>> upstream/master

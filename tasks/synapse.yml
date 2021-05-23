@@ -109,11 +109,6 @@
 
 - name: Configure .well-known server matrix discovery
   template:
-    src: server.j2
-    dest: "{{ matrix_well_known_location }}/server"
-    owner: www-data
-    group: www-data
-    mode: 0644
     src: well-known/{{ item.src }}
     dest: "{{ matrix_well_known_location }}/{{ item.dest }}"
     owner: www-data

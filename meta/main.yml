@@ -1,6 +1,7 @@
 ---
 galaxy_info:
-  author: "Michael Neese"
+  author: "Michael Buluma"
+  role_name: matrix-synapse-auto-deploy
   description: Ansible playbook for managing a matrix node with synapse and riot
   min_ansible_version: 2.5
   license: BSD
