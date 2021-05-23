@@ -53,7 +53,6 @@
   notify:
     - reload systemctl daemon
     - restart turn server
-<<<<<<< HEAD
 
 #- name: Configure local coturn turn_uris
 #  lineinfile: "dest={{ synapse_path }}/homeserver.yaml"
@@ -63,5 +62,3 @@
 #  when: install_turnserver and not ansible_check_mode
 #  notify:
 #    - restart synapse
-=======
->>>>>>> upstream/master

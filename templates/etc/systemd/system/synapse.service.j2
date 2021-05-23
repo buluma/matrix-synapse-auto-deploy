@@ -14,10 +14,7 @@ ExecStop={{ synapse_path }}/bin/synctl stop {{ synapse_path }}/homeserver.yaml
 Restart=on-failure
 Environment=USER={{ username }} HOME=/home/{{ username }}
 Environment=SYNAPSE_CACHE_FACTOR={{synapse_cache_factor }}
-<<<<<<< HEAD
-=======
 Environment=LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.1
->>>>>>> upstream/master
 
 [Install]
 WantedBy=multi-user.target

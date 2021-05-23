@@ -8,16 +8,13 @@
 
 - name: Creating required directories
   file:
-<<<<<<< HEAD
     dest: /etc/nginx/common
     state: directory
-=======
     dest: "{{ item }}"
     state: directory
   with_items:
     - /etc/nginx/common/{{ hostname }}
     - /etc/nginx/conf.d
->>>>>>> upstream/master
 
 - name: Test if nginx synapse config exists
   stat:
@@ -38,12 +35,9 @@
     dest: /etc/nginx/{{item.dest}}
   with_items:
     - { src: 'sites-available/synapse.j2', dest: 'sites-available/synapse' }
-<<<<<<< HEAD
     - { src: 'common/matrix.conf.j2', dest: 'common/matrix.conf' }
-=======
     - { src: 'common/matrix/matrix.conf.j2', dest: 'common/{{ hostname }}/matrix.conf' }
     - { src: 'conf.d/upstream-matrix.conf.j2', dest: 'conf.d/upstream-matrix.conf' }
->>>>>>> upstream/master
   notify:
     - restart nginx
   when: not install_letsencrypt
@@ -63,9 +57,6 @@
     state: absent
   notify:
     - restart nginx
-<<<<<<< HEAD
 
 - name: Flush handlers
   meta: flush_handlers
-=======
->>>>>>> upstream/master

@@ -96,8 +96,6 @@ public_baseurl: https://{{ hostname }}:8448/
 # hard limit.
 soft_file_limit: 0
 
-<<<<<<< HEAD
-=======
 # Whether to require authentication to retrieve profile data (avatars,
 # display names) of other users through the client API. Defaults to
 # 'false'. Note that profile data is also available via the federation
@@ -128,7 +126,6 @@ soft_file_limit: 0
 #
 #default_room_version: "5"
 
->>>>>>> upstream/master
 # The GC threshold parameters to pass to `gc.set_threshold`, if defined
 # gc_thresholds: [700, 10, 10]
 
@@ -140,8 +137,7 @@ soft_file_limit: 0
 # (except those sent by local server admins). The default is False.
 # block_non_admin_invites: True
 
-<<<<<<< HEAD
-=======
+
 # Room searching
 #
 # If disabled, new messages will not be indexed for searching and users
@@ -149,7 +145,6 @@ soft_file_limit: 0
 #
 #enable_search: false
 
->>>>>>> upstream/master
 # Restrict federation to the following whitelist of domains.
 # N.B. we recommend also firewalling your federation listener to limit
 # inbound federation traffic as early as possible, rather than relying
@@ -161,14 +156,12 @@ soft_file_limit: 0
 #  - nyc.example.com
 #  - syd.example.com
 
-<<<<<<< HEAD
 # List of ports that Synapse should listen on, their purpose and their
 # configuration.
 listeners:
 {% if install_reverseproxy == false %}
   # Main HTTPS listener
   # For when matrix traffic is sent directly to synapse.
-=======
 # Prevent federation requests from being sent to the following
 # blacklist IP address CIDR ranges. If this option is not specified, or
 # specified with an empty list, no ip range blacklist will be enforced.
@@ -258,7 +251,6 @@ listeners:
   # will also need to give Synapse a TLS key and certificate: see the TLS section
   # below.)
   #
->>>>>>> upstream/master
   -
     # The port to listen for HTTPS requests on.
     port: 8448
@@ -303,7 +295,7 @@ listeners:
     #     config: {}
 
 {% endif %}
-<<<<<<< HEAD
+
   # Unsecure HTTP listener,
   # For when matrix traffic passes through loadbalancer that unwraps TLS.
   - port: 8008
@@ -312,7 +304,7 @@ listeners:
     bind_addresses: ['127.0.0.1']
 {% else %}
     bind_addresses: ['::', '0.0.0.0']
-=======
+
   # Unsecure HTTP listener: for when matrix traffic passes through a reverse proxy
   # that unwraps TLS.
   #
@@ -325,7 +317,7 @@ listeners:
     bind_addresses: [{{ synapse_reverseproxy_bind_addresses }}]
 {% else %}
     bind_addresses: ['::']
->>>>>>> upstream/master
+
 {% endif %}
     type: http
 
@@ -340,15 +332,14 @@ listeners:
       - names: [metrics]
         compress: true
 {% endif %}
-<<<<<<< HEAD
-=======
+
+
     # example additional_resources:
     #
     #additional_resources:
     #  "/_matrix/my/custom/endpoint":
     #    module: my_module.CustomRequestHandler
     #    config: {}
->>>>>>> upstream/master
 
   # Turn on the twisted ssh manhole service on localhost on the given
   # port.
@@ -357,9 +348,7 @@ listeners:
   #   type: manhole
 
 
-<<<<<<< HEAD
 # Database configuration
-=======
 ## Homeserver blocking ##
 
 # How to reach the server admin, used in ResourceLimitError
@@ -711,21 +700,17 @@ database:
 event_cache_size: "10K"
 
 
-<<<<<<< HEAD
 # A yaml python logging config file
-=======
 ## Logging ##
 
 # A yaml python logging config file as described by
 # https://docs.python.org/3.7/library/logging.config.html#configuration-dictionary-schema
 #
->>>>>>> upstream/master
 log_config: "{{ synapse_path }}/{{ domain }}.log.config"
 
 
 ## Ratelimiting ##
 
-<<<<<<< HEAD
 # Number of messages a client can send per second
 rc_messages_per_second: 0.2
 
@@ -753,7 +738,6 @@ federation_rc_concurrent: 3
 
 
 # Directory where uploaded images and attachments are stored.
-=======
 # Ratelimiting settings for client actions (registration, login, messaging).
 #
 # Each ratelimiting configuration is made of two parameters:
@@ -843,7 +827,6 @@ federation_rc_concurrent: 3
 
 # Directory where uploaded images and attachments are stored.
 #
->>>>>>> upstream/master
 media_store_path: "{{ synapse_path }}/media_store"
 
 # Media storage providers allow media to be stored in different
@@ -860,12 +843,9 @@ media_store_path: "{{ synapse_path }}/media_store"
 #   config:
 #     directory: /mnt/some/other/directory
 
-<<<<<<< HEAD
 # Directory where in-progress uploads are stored.
 uploads_path: "{{ synapse_path }}/uploads"
 
-=======
->>>>>>> upstream/master
 # The largest allowed upload size in bytes
 max_upload_size: "{{ max_upload_size }}"
 
@@ -1056,7 +1036,6 @@ enable_registration: {{ enable_registration }}
 # registrations_require_3pid:
 #     - email
 #     - msisdn
-=======
 # Optional account validity configuration. This allows for accounts to be denied
 # any request after a given period.
 #
@@ -1158,7 +1137,7 @@ session_lifetime: "{{ synapse_session_lifetime }}"
 #       pattern: ".*@vector\.im"
 #     - medium: msisdn
 #       pattern: "\+44"
-=======
+
 #allowed_local_3pids:
 #  - medium: email
 #    pattern: '.*@matrix\.org'
@@ -1201,7 +1180,7 @@ trusted_third_party_id_servers:
 #auto_join_rooms:
 #    - "#example:example.com"
 
-=======
+
 {% if guest_access %}
 allow_guest_access: True
 {% else %}
@@ -1278,10 +1257,7 @@ account_threepid_delegates:
 ## Metrics ###
 
 # Enable collection and rendering of performance metrics
-<<<<<<< HEAD
-=======
-#
->>>>>>> upstream/master
+
 {% if synapse_enable_metrics %}
 enable_metrics: True
 {% else %}
@@ -1289,8 +1265,6 @@ enable_metrics: False
 {% endif %}
 report_stats: True
 
-<<<<<<< HEAD
-=======
 # Enable sentry integration
 # NOTE: While attempts are made to ensure that the logs don't contain
 # any sensitive information, this cannot be guaranteed. By enabling
@@ -1319,7 +1293,6 @@ metrics_flags:
 #
 #report_stats_endpoint: https://example.com/report-usage-stats/push
 
->>>>>>> upstream/master
 
 ## API Configuration ##
 
@@ -1364,7 +1337,7 @@ session_lifetime: "{{ synapse_session_lifetime }}"
 
 # a secret which is used to calculate HMACs for form values, to stop
 # falsification of values
-=======
+
 # Uncomment to enable tracking of application service IP addresses. Implicitly
 # enables MAU tracking for application service users.
 #
@@ -1380,7 +1353,6 @@ macaroon_secret_key: "{{ macaroon_secret_key }}"
 # falsification of values. Must be specified for the User Consent
 # forms to work.
 #
->>>>>>> upstream/master
 form_secret: "{{ form_secret }}"
 
 ## Signing Keys ##
@@ -1397,7 +1369,7 @@ old_signing_keys: {}
 #    key: "The public part of your old signing key."
 #    # Millisecond POSIX timestamp when the key expired.
 #    expired_ts: 123456789123
-=======
+
 # to sign new messages.
 #
 old_signing_keys:
@@ -1411,13 +1383,11 @@ old_signing_keys:
   # For example:
   #
   #"ed25519:id": { key: "base64string", expired_ts: 123456789123 }
->>>>>>> upstream/master
 
 # How long key response published by this server is valid for.
 # Used to set the valid_until_ts in /key/v2 APIs.
 # Determines how quickly servers will query to check which keys
 # are still valid.
-<<<<<<< HEAD
 key_refresh_interval: "1d" # 1 Day.
 
 # The trusted servers to download signing keys from.
@@ -1441,7 +1411,6 @@ perspectives:
 
 
 # Enable CAS for registration and login.
-=======
 #
 #key_refresh_interval: 1d
 
@@ -1625,14 +1594,11 @@ saml2_config:
 
 
 # Enable CAS for registration and login.
-#
->>>>>>> upstream/master
 #cas_config:
 #   enabled: true
 #   server_url: "https://cas-server.com"
 #   service_url: "https://homeserver.domain.com:8448"
-<<<<<<< HEAD
-=======
+
 #   #displayname_attribute: name
 >>>>>>> upstream/master
 #   #required_attributes:
@@ -1640,28 +1606,23 @@ saml2_config:
 
 
 # The JWT needs to contain a globally unique "sub" (subject) claim.
-#
-<<<<<<< HEAD
 # jwt_config:
 #    enabled: true
 #    secret: "a secret"
 #    algorithm: "HS256"
-=======
+
 #jwt_config:
 #   enabled: true
 #   secret: "a secret"
 #   algorithm: "HS256"
->>>>>>> upstream/master
 
 
 # Enable password for login.
 password_config:
-<<<<<<< HEAD
    enabled: true
    # Uncomment and change to a secret random string for extra security.
    # DO NOT CHANGE THIS AFTER INITIAL SETUP!
    #pepper: ""
-=======
    # Uncomment to disable password login
    #
    #enabled: false
@@ -1693,15 +1654,12 @@ password_config:
 #   smtp_host: "localhost"
 <<<<<<< HEAD
 #   smtp_port: 25
-=======
 #   smtp_port: 25 # SSL: 465, STARTTLS: 587
->>>>>>> upstream/master
 #   smtp_user: "exampleusername"
 #   smtp_pass: "examplepassword"
 #   require_transport_security: False
 #   notif_from: "Your Friendly %(app)s Home Server <noreply@example.com>"
 #   app_name: Matrix
-<<<<<<< HEAD
 #   template_dir: res/templates
 #   notif_template_html: notif_mail.html
 #   notif_template_text: notif_mail.txt
@@ -1725,7 +1683,6 @@ email:
 {% endif %}
 
 
-=======
 #
 #   # Enable email notifications by default
 #   #
@@ -1841,10 +1798,6 @@ email:
 #         #filter: "(objectClass=posixAccount)"
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> upstream/master
 # Clients requesting push notifications can either have the body of
 # the message sent in the notification poke along with other details
 # like the sender, or just the event ID and room ID (`event_id_only`).
@@ -1867,14 +1820,13 @@ email:
 #         example_option: 'things'
 
 
-<<<<<<< HEAD
 # Whether to allow non server admins to create groups on this server
 enable_group_creation: false
 
 # If enabled, non server admins can only create groups with local parts
 # starting with this prefix
 # group_creation_prefix: "unofficial/"
-=======
+
 # Uncomment to allow non-server-admin users to create groups on this server
 #
 enable_group_creation: {{ synapse_enable_group_creation | lower }}
@@ -1944,11 +1896,6 @@ user_directory:
 #   block_events_error: >-
 #     To continue using this homeserver you must review and agree to the
 #     terms and conditions at %(consent_uri)s
-#
-
-
-<<<<<<< HEAD
-=======
 
 # Local statistics collection. Used in populating the room directory.
 #
@@ -1965,7 +1912,6 @@ user_directory:
 #   retention: 1y
 
 
->>>>>>> upstream/master
 # Server Notices room configuration
 #
 # Uncomment this section to enable a room which can be used to send notices
@@ -1984,8 +1930,6 @@ user_directory:
 #   system_mxid_display_name: "Server Notices"
 #   system_mxid_avatar_url: "mxc://server.com/oumMVlgDnLYFaPVkExemNVVZ"
 #   room_name: "Server Notices"
-<<<<<<< HEAD
-=======
 
 
 

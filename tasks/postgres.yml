@@ -5,11 +5,8 @@
     name:
       - libpq-dev
       - postgresql
-<<<<<<< HEAD
-      - python-psycopg2
-=======
+      # - python-psycopg2
       - python3-psycopg2
->>>>>>> upstream/master
     state: present
 
 - name: Install psycopg2 into the python venv
@@ -17,10 +14,7 @@
     name: psycopg2
     virtualenv: "{{ synapse_path }}"
     extra_args: '--upgrade'
-<<<<<<< HEAD
-=======
   when: not ansible_check_mode
->>>>>>> upstream/master
 
 - name: Start postgresql unit
   service:
@@ -68,8 +62,6 @@
 #    line: '\1user: "{{ username }}"\n\1password: "{{ database_secret }}"\n\1database: "homeserver"\n\1host: "localhost"\n\1cp_min: 5\n\1cp_max: 10'
 #    backrefs: yes
 #  when: not ansible_check_mode
-<<<<<<< HEAD
-=======
 
 - name: Configure listen addresse(s)
   lineinfile:
@@ -79,7 +71,6 @@
     backrefs: yes
   notify:
     - restart postgresql
->>>>>>> upstream/master
 
 - name: Migrate the database
   command: "{{ synapse_path }}/bin/synapse_port_db --sqlite-database homeserver.db --postgres-config homeserver.yaml"

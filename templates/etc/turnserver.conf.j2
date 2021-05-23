@@ -12,19 +12,14 @@ no-tcp-relay
 denied-peer-ip=10.0.0.0-10.255.255.255
 denied-peer-ip=192.168.0.0-192.168.255.255
 denied-peer-ip=172.16.0.0-172.31.255.255
-=======
 {% for addr in turn_denied_peer_ips %}
 denied-peer-ip={{ addr }}
 {% endfor %}
->>>>>>> upstream/master
 
 # consider whether you want to limit the quota of relayed streams per user (or total) to avoid risk of DoS.
 user-quota=12 # 4 streams per video call, so 12 streams = 3 simultaneous relayed calls per user.
 total-quota=1200
-<<<<<<< HEAD
-=======
 
 {% for addr in turn_listening_ips %}
 listening-ip={{ addr }}
 {% endfor %}
->>>>>>> upstream/master

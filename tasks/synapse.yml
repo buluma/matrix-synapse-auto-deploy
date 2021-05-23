@@ -19,10 +19,7 @@
       - virtualenv
       - libsystemd-dev
       - pkg-config
-<<<<<<< HEAD
-=======
       - libjemalloc1
->>>>>>> upstream/master
     state: present
 
 - name: Create synapse user
@@ -112,13 +109,11 @@
 
 - name: Configure .well-known server matrix discovery
   template:
-<<<<<<< HEAD
     src: server.j2
     dest: "{{ matrix_well_known_location }}/server"
     owner: www-data
     group: www-data
     mode: 0644
-=======
     src: well-known/{{ item.src }}
     dest: "{{ matrix_well_known_location }}/{{ item.dest }}"
     owner: www-data
@@ -127,7 +122,6 @@
   with_items:
     - { src: 'client.j2', dest: 'client' }
     - { src: 'server.j2', dest: 'server' }
->>>>>>> upstream/master
   when: install_well_known
 
 - name: Install synapse systemd conf

@@ -11,11 +11,7 @@
     state: directory
     mode: 0755
 
-<<<<<<< HEAD
-- name: install basic packages
-=======
 - name: Install basic packages
->>>>>>> upstream/master
   apt:
     name:
       - wget
@@ -26,25 +22,16 @@
 
 - name: Import synapse tasks
   import_tasks: synapse.yml
-<<<<<<< HEAD
-  when: install_synapse
-=======
   when: install_synapse and 'matrix' in group_names
->>>>>>> upstream/master
   tags: synapse
 
 - name: Import turnserver tasks
   import_tasks: coturn.yml
-<<<<<<< HEAD
-  when: install_turnserver
-=======
   when: install_turnserver and 'matrix' in group_names
->>>>>>> upstream/master
   tags: turnserver
 
 - name: Import nginx tasks
   import_tasks: nginx.yml
-<<<<<<< HEAD
   when: install_reverseproxy
   tags: nginx
 
@@ -65,8 +52,7 @@
 
 - name: Import riot.im tasks
   import_tasks: riot.im.yml
-  when: install_riot
-=======
+  # when: install_riot
   when: install_reverseproxy and 'matrix' in group_names
   tags: nginx
 
@@ -101,7 +87,6 @@
 - name: Import riot.im tasks
   import_tasks: riot.im.yml
   when: install_riot and 'matrix' in group_names
->>>>>>> upstream/master
   tags: riot
 
 - name: Flush handlers
