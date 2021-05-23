@@ -11,8 +11,4 @@ script:
   - ${PWD}/tests/test.sh
 
 notifications:
-<<<<<<< HEAD
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
-=======
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/
->>>>>>> upstream/master
