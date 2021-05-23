@@ -11,7 +11,11 @@
     state: directory
     mode: 0755
 
+<<<<<<< HEAD
 - name: install basic packages
+=======
+- name: Install basic packages
+>>>>>>> upstream/master
   apt:
     name:
       - wget
@@ -22,16 +26,25 @@
 
 - name: Import synapse tasks
   import_tasks: synapse.yml
+<<<<<<< HEAD
   when: install_synapse
+=======
+  when: install_synapse and 'matrix' in group_names
+>>>>>>> upstream/master
   tags: synapse
 
 - name: Import turnserver tasks
   import_tasks: coturn.yml
+<<<<<<< HEAD
   when: install_turnserver
+=======
+  when: install_turnserver and 'matrix' in group_names
+>>>>>>> upstream/master
   tags: turnserver
 
 - name: Import nginx tasks
   import_tasks: nginx.yml
+<<<<<<< HEAD
   when: install_reverseproxy
   tags: nginx
 
@@ -53,4 +66,43 @@
 - name: Import riot.im tasks
   import_tasks: riot.im.yml
   when: install_riot
+=======
+  when: install_reverseproxy and 'matrix' in group_names
+  tags: nginx
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Import letsencrypt tasks
+  import_tasks: letsencrypt.yml
+  when: install_letsencrypt and 'matrix' in group_names
+  tags: letsencrypt
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Delegate facts to group matrix_db_server
+  set_fact:
+    postgres_listen_address: "{{ postgres_listen_address }}"
+  delegate_to: "{{ item }}"
+  delegate_facts: true
+  with_items: "{{ groups['matrix_db_server'] }}"
+
+- name: Import postgres tasks
+  import_tasks: postgres.yml
+  when: install_postgres and 'matrix_db_server' in group_names
+  tags: postgres
+
+- name: Import ma1sd tasks
+  import_tasks: ma1sd.yml
+  when: install_ma1sd and 'matrix' in group_names
+  tags: ma1sd
+
+- name: Import riot.im tasks
+  import_tasks: riot.im.yml
+  when: install_riot and 'matrix' in group_names
+>>>>>>> upstream/master
   tags: riot
+
+- name: Flush handlers
+  meta: flush_handlers

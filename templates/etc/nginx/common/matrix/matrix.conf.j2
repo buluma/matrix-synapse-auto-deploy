@@ -1,0 +1,44 @@
+        client_max_body_size {{ max_upload_size }};
+        location /.well-known/matrix {
+            root {{ le_well_known_location }};
+            expires 4h;
+            default_type "application/json";
+            add_header Access-Control-Allow-Origin *;
+            allow all;
+        }
+{% if nginx_block_openid | bool %}
+
+        location ~ /_matrix/.*(openid) {
+            deny  all;
+        }
+{% endif %}
+{% if install_ma1sd | bool %}
+
+        location ^~ /_matrix/identity {
+            proxy_pass       http://ma1sd/_matrix/identity;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location ^~ /_matrix/client/r0/user_directory/search {
+            proxy_pass       http://ma1sd/_matrix/client/r0/user_directory/search;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location ~ ^/_matrix/client/r0/register/(email|msisdn)/requestToken$ {
+            proxy_pass http://ma1sd;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+{% endif %}
+
+        location / {
+            proxy_pass       http://matrix;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }

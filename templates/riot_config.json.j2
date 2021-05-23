@@ -2,12 +2,17 @@
     "default_server_config": {
         "m.homeserver": {
             "base_url": "https://{{ riot_hs_url }}",
+<<<<<<< HEAD
             "server_name": "Geekbundle.org"
+=======
+            "server_name": "{{ riot_server_name }}"
+>>>>>>> upstream/master
         },
         "m.identity_server": {
             "base_url": "https://{{ riot_is_url }}"
         }
     },
+<<<<<<< HEAD
     "disable_custom_urls": true,
     "disable_guests": true,
     "disable_login_language_selector": false,
@@ -21,6 +26,26 @@
 {% endif %}
 {% if riot_integration_ui is not none and riot_integration_ui | length > 0 %}
     "integrations_jitsi_widget_url": {{ riot_integration_ui }},
+=======
+    "disable_custom_urls": false,
+{% if guest_access %}
+    "disable_guests": false,
+{% else %}
+    "disable_guests": true,
+{% endif %}
+    "disable_login_language_selector": false,
+    "disable_3pid_login": false,
+    "brand": "Element",
+{% if riot_integration_ui is not none and riot_integration_ui | length > 0 %}
+    "integrations_ui_url": {{ riot_integration_ui }},
+{% endif %}
+{% if riot_integration_api is not none and riot_integration_api | length > 0 %}
+    "integrations_rest_url": {{ riot_integration_api }},
+{% endif %}
+{% if riot_integrations_widget_url is not none and riot_integrations_widget_url | length > 0 %}
+    "integrations_widgets_urls": [
+      {{ riot_integrations_widget_url }}    ],
+>>>>>>> upstream/master
 {% endif %}
 {% if riot_bug_report_endpoint_url is not none and riot_bug_report_endpoint_url | length > 0 %}
     "bug_report_endpoint_url": {{ riot_bug_report_endpoint_url }},
@@ -31,11 +56,17 @@
     "default_theme": "{{ riot_theme }}",
     "roomDirectory": {
         "servers": [
+<<<<<<< HEAD
             "{{ hostname }}",
             "matrix.org"
         ]
     },
     "welcomeUserId": null,
+=======
+            "matrix.org"
+        ]
+    },
+>>>>>>> upstream/master
     "piwik": {
         "x-url": "https://piwik.riot.im/",
         "whitelistedHSUrls": ["https://matrix.org"],
@@ -43,9 +74,20 @@
         "siteId": 1
     },
     "enable_presence_by_hs_url": {
+<<<<<<< HEAD
         "https://matrix.org": false
     },
     "embeddedPages": {
         "homeUrl": ""
+=======
+        "https://matrix.org": false,
+        "https://matrix-client.matrix.org": false
+    },
+    "settingDefaults": {
+        "breadcrumbs": true
+    },
+    "jitsi": {
+        "preferredDomain": "{{ riot_jitsi_url }}"
+>>>>>>> upstream/master
     }
 }

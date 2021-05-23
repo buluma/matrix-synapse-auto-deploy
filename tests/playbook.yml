@@ -4,6 +4,10 @@
   vars:
     enable_registration: false
     make_migration: false
+<<<<<<< HEAD
+=======
+    install_letsencrypt: false
+>>>>>>> upstream/master
 
   roles:
     - role_under_test

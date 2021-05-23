@@ -24,4 +24,8 @@
 
 - name: restart postgresql
   service: name=postgresql state=restarted enabled=yes
+<<<<<<< HEAD
   tags: postgres
+=======
+  tags: postgres
+>>>>>>> upstream/master
