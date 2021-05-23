@@ -1,0 +1,17 @@
+---
+extends: default
+
+rules:
+  line-length:
+    max: 180
+    level: warning
+  comments-indentation: disable
+  trailing-spaces: disable
+  comments: disable
+  truthy: disable
+  braces: disable
+  colons: disable
+  indentation: disable
+
+ignore: |
+  .github/stale.yml
